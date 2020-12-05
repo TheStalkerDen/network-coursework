@@ -47,9 +47,41 @@ void MainWindow::showNodeInfo(NetworkNode *node)
     ui->isHostCheckBox->setChecked(node->getHostStatus());
 }
 
+void MainWindow::showLineDetails(NetworkLine *line)
+{
+    currentSelectedLine = line;
+    ui->isHalfDuplex->setChecked(line->getIsHalfDuplex());
+    int index = ui->lineWeightComboButton->findText(QString::number(line->getWeight()));
+    ui->lineWeightComboButton->setCurrentIndex(index);
+}
+
+void MainWindow::showNetworkDegree(double networkDegree)
+{
+    ui->networkDegreeValue->setText(QString::number(networkDegree));
+}
+
 void MainWindow::setAlgoCounter(int value)
 {
     ui->stepCounterLabel->setText("Step: " + QString::number(value));
+}
+
+void MainWindow::setStationsLists()
+{
+    QList<NetworkNode*> stations = scene->getStationsList();
+    std::sort(stations.begin(),stations.end(),[](NetworkNode* node1, NetworkNode* node2){
+        if(node1->getId() < node2->getId()){
+            return true;
+        }
+        return false;
+    });
+
+    QStringList stationsStringList;
+
+    for(auto& node: stations){
+        stationsStringList << QString::number(node->getId());
+    }
+    ui->station1ComboBox->addItems(stationsStringList);
+    ui->station2ComboBox->addItems(stationsStringList);
 }
 
 void MainWindow::generatesPathsList(QList<NetworkPath *> paths)
@@ -150,9 +182,7 @@ void MainWindow::on_manualWeightRadioButton_toggled(bool checked)
 
 void MainWindow::on_manualWeightComboBox_currentIndexChanged(int index)
 {
-    QVariant rawData = ui->manualWeightComboBox->itemData(index);
-    QString data = rawData.toString();
-    int weight = data.toFloat();
+    int weight = ui->manualWeightComboBox->itemText(index).toInt();
     scene->setManualWeight(weight);
 }
 
@@ -183,6 +213,8 @@ void MainWindow::on_nextStepButton_clicked()
     if(!wasChanged){
         ui->showPathsGroupBox->setEnabled(true);
         ui->routingTableConfGroupBox->setDisabled(true);
+        ui->sendTab->setEnabled(true);
+        setStationsLists();
     }
 }
 
@@ -191,6 +223,8 @@ void MainWindow::on_endConfigurationButton_clicked()
     scene->endRoutingAlgo();
     ui->showPathsGroupBox->setEnabled(true);
     ui->routingTableConfGroupBox->setDisabled(true);
+    ui->sendTab->setEnabled(true);
+    setStationsLists();
 }
 
 void MainWindow::on_enableEditModeButton_clicked()
@@ -202,6 +236,9 @@ void MainWindow::on_enableEditModeButton_clicked()
     ui->stepCounterLabel->setText("Step:");
     ui->graphEditorTab->setEnabled(true);
     ui->routingTableConfGroupBox->setEnabled(true);
+
+    ui->pathsListView->setModel({});
+    ui->textPathReprez->setText("");
 
     scene->enableEditMode();
 }
@@ -221,4 +258,44 @@ void MainWindow::on_pathsListView_clicked(const QModelIndex &index)
     NetworkPath* path = scene->getPaths().at(index.row());
     ui->textPathReprez->setText(path->getTextReprez());
     scene->drawPath(index.row());
+}
+
+
+void MainWindow::on_isHalfDuplex_stateChanged(int arg1)
+{
+    if(currentSelectedLine){
+        currentSelectedLine->setIsHalfDuplex(arg1);
+    }
+}
+
+void MainWindow::on_lineWeightComboButton_currentIndexChanged(const QString &arg1)
+{
+    if(currentSelectedLine){
+        int weight = ui->lineWeightComboButton->currentText().toInt();
+        currentSelectedLine->setWeight(weight);
+    }
+}
+
+void MainWindow::on_startSendingButton_clicked()
+{
+    int node1 = ui->station1ComboBox->currentText().toInt();
+    int node2 = ui->station2ComboBox->currentText().toInt();
+    if(node1 != node2){
+        int packageSize = ui->packageSizeLineEdit->text().toInt();
+        int headerSize = ui->headerSizeLineEdit->text().toInt();
+        int messageSize = ui->messageSizeLineEdit->text().toInt();
+        SendingType type;
+        if(ui->datagramRadioButton->isChecked()){
+            type = SendingType::Datagram;
+        }else if (ui->logConnectionRadioButton->isChecked()){
+            type = SendingType::LogicalConnection;
+        }else if (ui->virtChannelRadioButton->isChecked()){
+            type = SendingType::VirualChannel;
+        } else {
+            type = SendingType::Datagram;
+        }
+
+        bool isRealTime = ui->realtimeRadioButton->isChecked();
+        scene->startSimulation(node1,node2,messageSize,packageSize,headerSize,type,isRealTime);
+    }
 }

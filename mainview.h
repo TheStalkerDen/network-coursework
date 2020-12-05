@@ -1,6 +1,8 @@
 #ifndef MAINVIEW_H
 #define MAINVIEW_H
 
+#include "global.h"
+
 #include <QGraphicsView>
 #include <QObject>
 
@@ -22,6 +24,7 @@ private:
     bool is_move__ = false;
     bool is_selection__ = true;
     void startSetup();
+    Global *global = Global::GetInstance();
 public slots:
     void zoomIn() {scale(1.2,1.2);}
     void zoomOut() {scale(1/1.2, 1/1.2);}

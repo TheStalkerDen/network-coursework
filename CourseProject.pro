@@ -19,7 +19,8 @@ SOURCES += \
     networkpackage.cpp \
     networkpath.cpp \
     routingtable.cpp \
-    routingtablewidget.cpp
+    routingtablewidget.cpp \
+    simulationdatawidget.cpp
 
 HEADERS += \
     global.h \
@@ -31,11 +32,13 @@ HEADERS += \
     networkpackage.h \
     networkpath.h \
     routingtable.h \
-    routingtablewidget.h
+    routingtablewidget.h \
+    simulationdatawidget.h
 
 FORMS += \
     mainwindow.ui \
-    routingtablewidget.ui
+    routingtablewidget.ui \
+    simulationdatawidget.ui
 
 # Default rules for deployment.
 qnx: target.path = /tmp/$${TARGET}/bin

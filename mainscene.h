@@ -7,6 +7,7 @@
 #include <QVector>
 #include <global.h>
 #include "networknode.h"
+#include "networkpackage.h"
 #include "networkpath.h"
 
 class NetworkLine;
@@ -14,6 +15,7 @@ enum class RoutingMetrics;
 
 namespace Ui { class MainWindow; }
 
+enum class SendingType{Datagram,LogicalConnection,VirualChannel};
 
 class MainScene : public QGraphicsScene
 {
@@ -38,15 +40,26 @@ public:
     void endRoutingAlgo();
     bool existsNode(int node);
 
+
     void getShortestPaths(int fromNode, int destNode);
     QList<NetworkPath*> getPaths() const;
     void drawPath(int pathNumber);
+    void drawPath(NetworkPath* networkPath);
+    void undrawPath();
+
+    void startSimulation(int fromNode, int toNode, int messageSize, int packageSize, int headerSize, SendingType send_type, bool isRealtime);
+
+    QList<NetworkNode*> getStationsList();
+
+    void calculateNetworkDegree();
 
     void enableEditMode();
 
     bool isSelect2Node = false;  //should be true when was selected first node for connecting
 private:
     int max_id = 0;
+
+    double networkDegree = 0;
 
     int algo_steps_counter = 0;
     QList<NetworkPath*> networkPaths;
@@ -58,6 +71,9 @@ private:
     QList<NetworkLine*> networkLines {};
 
     Global *global = Global::GetInstance();
+    SimulationData simData;
+    QTimer *timer;
+
 
     const QVector<int> weights = {1,3,5,6,8,10,11,15,18,20,22,26,27};
 
@@ -87,6 +103,7 @@ public slots:
 signals:
     void selNodeChanged(int node);
     void showNode(NetworkNode* node);
+    void showNetworkDegree(double networkDegree);
     void generatePathsList(QList<NetworkPath*> paths);
 
     void setCounterLabel(int value);

@@ -1,3 +1,4 @@
+#include "mainwindow.h"
 #include "networkline.h"
 #include "networknode.h"
 
@@ -19,12 +20,14 @@ NetworkLine::NetworkLine(NetworkNode *node1, NetworkNode *node2, int weight, QGr
     line->setZValue(-999);
     defaultPen = QPen();
     setPos(calculateMiddlePoint());
+    connect(this,&NetworkLine::showLineDetails, qobject_cast<MainWindow*>(global->m_main_window),&MainWindow::showLineDetails);
 }
 
 void NetworkLine::writeJson(QJsonObject &jsonObj) const
 {
     jsonObj["node1_id"] = node1->getId();
     jsonObj["node2_id"] = node2->getId();
+    jsonObj["is_half_duplex"] = isHalfDuplex;
     jsonObj["weight"] = weight;
 }
 
@@ -65,6 +68,12 @@ void NetworkLine::update()
     const QLineF lineParm = QLineF(mapFromParent(node1->pos()),mapFromParent(node2->pos()));
     line->setLine(lineParm);
     setPos(calculateMiddlePoint());
+}
+
+void NetworkLine::setWeight(int weight)
+{
+    this->weight = weight;
+    emit update();
 }
 
 void NetworkLine::setPathPart()
@@ -109,6 +118,12 @@ void NetworkLine::setIsHalfDuplex(bool value)
     }
 }
 
+int NetworkLine::bytesPerTick()
+{
+    return 1000/weight;
+}
+
+
 void NetworkLine::contextMenuEvent(QGraphicsSceneContextMenuEvent *event)
 {
     if(!global->is_simulation){
@@ -134,15 +149,16 @@ void NetworkLine::paint(QPainter *painter, const QStyleOptionGraphicsItem *optio
 {
     Q_UNUSED(option);
     Q_UNUSED(widget);
-    painter->drawText(0,0,QString::number(weight));
+    painter->setFont(QFont("Times",10,QFont::Bold));
+    painter->drawText(1,0,QString::number(weight));
     if(isPathPart){
         line->setPen(QPen(QBrush(Qt::red),4));
     }
 }
 
 
-
-
-
-
-
+void NetworkLine::mousePressEvent(QGraphicsSceneMouseEvent *event)
+{
+    qDebug() << "Line was pressed";
+    emit showLineDetails(this);
+}

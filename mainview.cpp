@@ -1,3 +1,4 @@
+#include "mainscene.h"
 #include "mainview.h"
 
 #include <QIcon>
@@ -31,7 +32,7 @@ void MainView::toggleMoveMode()
 
 void MainView::contextMenuEvent(QContextMenuEvent *event)
 {
-    if(itemAt(event->pos()) == nullptr){
+    if(itemAt(event->pos()) == nullptr && !global->is_simulation){
         QMenu menu;
 
         QAction* action_firstAction = menu.addAction(
@@ -39,10 +40,6 @@ void MainView::contextMenuEvent(QContextMenuEvent *event)
                     QString("Add node")
                     );
         menu.addSeparator();
-        QAction* action_secondAction = menu.addAction(
-                    QIcon(),
-                    QString("Second action")
-                    );
         QAction* selected_action = menu.exec(event->globalPos());
         if(selected_action) {
             if(selected_action == action_firstAction)
@@ -50,9 +47,19 @@ void MainView::contextMenuEvent(QContextMenuEvent *event)
                 const QPointF scenePos = mapToScene(event->pos());
                 emit nodeShouldBeCreated(scenePos);
             }
-            else if(selected_action == action_secondAction)
+        }
+    } else if(itemAt(event->pos()) == nullptr &&  global->is_simulation) {
+        QMenu menu;
+
+        QAction *undrawPath = menu.addAction(
+                    QIcon(),
+                    QString("clear path")
+                    );
+        QAction* selected_action = menu.exec(event->globalPos());
+        if(selected_action){
+            if(selected_action == undrawPath)
             {
-                qDebug() << "Second action!";
+                qobject_cast<MainScene*>(scene())->undrawPath();
             }
         }
     } else {

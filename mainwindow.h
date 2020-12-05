@@ -6,6 +6,7 @@
 #include "global.h"
 #include "networkpath.h"
 
+class NetworkLine;
 class NetworkNode;
 class MainScene;
 
@@ -24,8 +25,12 @@ public:
 
 public slots:
     void showNodeInfo(NetworkNode* node);
+    void showLineDetails(NetworkLine *line);
+    void showNetworkDegree(double networkDegree);
 
     void setAlgoCounter(int value);
+
+    void setStationsLists();
 
     void generatesPathsList(QList<NetworkPath*> paths);
 
@@ -63,10 +68,17 @@ private slots:
 
     void on_pathsListView_clicked(const QModelIndex &index);
 
+    void on_isHalfDuplex_stateChanged(int arg1);
+
+    void on_lineWeightComboButton_currentIndexChanged(const QString &arg1);
+
+    void on_startSendingButton_clicked();
+
 private:
     Ui::MainWindow *ui;
     MainScene *scene;
     NetworkNode *currentShowNode;
+    NetworkLine *currentSelectedLine;
     Global* global;
 };
 #endif // MAINWINDOW_H

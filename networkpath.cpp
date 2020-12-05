@@ -17,11 +17,18 @@ QString NetworkPath::getTextReprez() const
     return textReprezentaiton;
 }
 
+void NetworkPath::addToPath(PathElement *pathElemet)
+{
+    path.append(pathElemet);
+}
+
 void NetworkPath::generateTextReprezentation()
 {
     textReprezentaiton = "";
     for(auto& netwElem: path){
         textReprezentaiton += QString::number(netwElem->node->getId());
-        textReprezentaiton += " -> ";
+        if(netwElem->line){
+            textReprezentaiton += " -> ";
+        }
     }
 }

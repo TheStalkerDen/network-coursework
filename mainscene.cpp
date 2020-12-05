@@ -6,17 +6,21 @@
 #include <QJsonObject>
 #include <QGraphicsView>
 #include <QRandomGenerator>
+#include <QTimer>
 
 #include "mainscene.h"
 #include "mainwindow.h"
 #include "networkline.h"
 #include "routingtable.h"
+#include "simulationdatawidget.h"
 
 MainScene::MainScene(QObject *parent) : QGraphicsScene(parent)
 {
+    global->main_scene = this;
     connect(this,&MainScene::changed,this,&MainScene::updateAll);
     connect(this,&MainScene::setCounterLabel, qobject_cast<MainWindow*>(global->m_main_window), &MainWindow::setAlgoCounter);
     connect(this,&MainScene::generatePathsList, qobject_cast<MainWindow*>(global->m_main_window), &MainWindow::generatesPathsList);
+    connect(this,&MainScene::showNetworkDegree, qobject_cast<MainWindow*>(global->m_main_window), &MainWindow::showNetworkDegree);
 }
 
 void MainScene::setNodesSelectable(bool state)
@@ -73,14 +77,17 @@ void MainScene::initializeFromJson(QJsonObject &jsonObj)
         int node1_id = lineObj["node1_id"].toInt();
         int node2_id = lineObj["node2_id"].toInt();
         int weight = lineObj["weight"].toInt();
+        bool is_half_duplex = lineObj["is_half_duplex"].toBool();
         NetworkNode *node1 = idToNodeMap[node1_id];
         NetworkNode *node2 = idToNodeMap[node2_id];
         NetworkLine *line = new NetworkLine(node1,node2,weight);
+        line->setIsHalfDuplex(is_half_duplex);
         node1->connectLine(line);
         node2->connectLine(line);
         networkLines.append(line);
         addItem(line);
     }
+    calculateNetworkDegree();
 }
 
 void MainScene::setWeightMode(bool isAuto)
@@ -116,6 +123,7 @@ void MainScene::removeNode(NetworkNode *node)
 {
     removeItem(node);
     networkNodes.removeOne(node);
+    calculateNetworkDegree();
 }
 
 void MainScene::removeLine(NetworkLine *line, NetworkNode* node)
@@ -128,6 +136,7 @@ void MainScene::removeLine(NetworkLine *line, NetworkNode* node)
 
     removeItem(line);
     networkLines.removeOne(line);
+    calculateNetworkDegree();
 }
 
 void MainScene::showNodeInfo(NetworkNode *node)
@@ -202,12 +211,7 @@ QList<NetworkPath *> MainScene::getPaths() const
 
 void MainScene::drawPath(int pathNumber)
 {
-    for(auto& node: networkNodes){
-        node->unsetPathPart();
-    }
-    for(auto& line: networkLines){
-        line->unsetPathPart();
-    }
+    undrawPath();
     NetworkPath* netw_path = networkPaths.at(pathNumber);
     auto path = netw_path->getPath();
     for(auto& pathElem: path){
@@ -218,10 +222,167 @@ void MainScene::drawPath(int pathNumber)
     }
 }
 
+void MainScene::drawPath(NetworkPath *networkPath)
+{
+    undrawPath();
+    auto path = networkPath->getPath();
+    for(auto& pathElem: path){
+        pathElem->node->setPathPart();
+        if(pathElem->line){
+            pathElem->line->setPathPart();
+        }
+    }
+}
+
+void MainScene::undrawPath()
+{
+    for(auto& node: networkNodes){
+        node->unsetPathPart();
+    }
+    for(auto& line: networkLines){
+        line->unsetPathPart();
+    }
+}
+
+void MainScene::startSimulation(int fromNode, int toNode, int messageSize, int packageSize, int headerSize, SendingType send_type, bool isRealtime)
+{
+    qDebug() << "Simulation started";
+    global->simData.tick_count = 0;
+    feelIdtoNodeMap();
+    for(auto& node: networkNodes){
+        node->initBeforeSimulation();
+    }
+
+    QQueue<NetworkPackage*> *shouldSend = new QQueue<NetworkPackage*>;
+
+    global->simData.all_packages.clear();
+    global->sendingType = send_type;
+
+    auto generatePackagesToSend = [&](){
+        int packageNumber =  ceil((double)messageSize / (packageSize - headerSize));
+        switch (global->sendingType) {
+            case SendingType::Datagram:
+                for(int i = 0; i < packageNumber; i++){
+                    QString packageName = QString("DAT%1").arg(i);
+                    NetworkPackage* package = new NetworkPackage(packageName,i,fromNode,toNode,PackageType::Info);
+                    package->setData_size(packageSize-headerSize);
+                    package->setHeader_size(headerSize);
+                    addItem(package);
+                    package->setVisible(false);
+                    shouldSend->append(package);
+                    global->simData.all_packages.append(package);
+                }
+                break;
+            case SendingType::LogicalConnection:
+            case SendingType::VirualChannel:
+                NetworkPackage* enqConnPackage = new NetworkPackage("EnqConn",0,fromNode,toNode,PackageType::Service);
+                enqConnPackage->setPackageServiceType(PackageServiceType::EnqConn);
+                enqConnPackage->setHeader_size(headerSize);
+                addItem(enqConnPackage);
+                enqConnPackage->setVisible(false);
+                shouldSend->append(enqConnPackage);
+                global->simData.all_packages.append(enqConnPackage);
+                for(int i = 0; i < packageNumber; i++){
+                    QString packageName = QString("Pack%1").arg(i);
+                    NetworkPackage* package = new NetworkPackage(packageName,i,fromNode,toNode,PackageType::Info);
+                    package->setData_size(packageSize-headerSize);
+                    package->setHeader_size(headerSize);
+                    addItem(package);
+                    package->setVisible(false);
+                    shouldSend->append(package);
+                    global->simData.all_packages.append(package);
+                }
+                NetworkPackage* enqDiscPackage = new NetworkPackage("EnqDisc",packageNumber+1,fromNode,toNode,PackageType::Service);
+                enqDiscPackage->setPackageServiceType(PackageServiceType::EnqDis);
+                enqDiscPackage->setHeader_size(headerSize);
+                addItem(enqDiscPackage);
+                enqDiscPackage->setVisible(false);
+                shouldSend->append(enqDiscPackage);
+                global->simData.all_packages.append(enqDiscPackage);
+        }
+    };
+
+    auto isSimulationEnd = [&](Global *global){
+        qDebug() << "check end condtion!";
+        auto& packages  = global->simData.all_packages;
+        for(auto& package: packages){
+            PackageStatus packageStatus = package->getPackageStatus();
+            if(packageStatus != PackageStatus::Sent && packageStatus != PackageStatus::Killed){
+                return false;
+            }
+        }
+        return true;
+    };
+
+    auto simulationTick = [&](MainScene* scene){
+        qDebug() << "process tick in scene: " << scene->global->simData.tick_count;
+        scene->global->simData.tick_count++;
+        for(auto& node:  scene->networkNodes){
+            node->simulationTick();
+        }
+    };
+
+    generatePackagesToSend();
+    NetworkNode* sendNode = idToNodeMap[fromNode];
+    sendNode->setShouldSent(shouldSend);
+    sendNode->setIsSendNode(true);
+
+    if(isRealtime){
+        timer = new QTimer(this);
+        timer->callOnTimeout([&](){
+            qDebug() << "Tick is executed";
+            if(!isSimulationEnd(this->global)){
+                simulationTick(this);
+            }else {
+                qDebug() << "End simulation";
+                SimulationDataWidget *widget = new SimulationDataWidget(qobject_cast<QWidget*>(this->global->m_main_window));
+                widget->setWindowTitle("Simulation Results");
+                widget->show();
+                this->timer->stop();
+            }
+        });
+        timer->start(100);
+        qDebug() << "Started real time";
+
+    } else {
+        qDebug() << "Quick result";
+        while(!isSimulationEnd(this->global)){
+            simulationTick(this);
+        }
+
+        SimulationDataWidget *widget = new SimulationDataWidget(qobject_cast<QWidget*>(this->global->m_main_window));
+        widget->setWindowTitle("Simulation Results");
+        widget->show();
+    }
+}
+
+QList<NetworkNode *> MainScene::getStationsList()
+{
+    QList<NetworkNode*> stations;
+    for(auto& node: networkNodes){
+        if(node->getHasConnectedHost()){
+            stations.append(node);
+        }
+    }
+    return stations;
+}
+
+void MainScene::calculateNetworkDegree()
+{
+    double lineConnections = 0;
+    for(auto& node: networkNodes){
+        lineConnections += node->getConnectedLines().size();
+    }
+
+    networkDegree = lineConnections / networkNodes.size();
+    emit showNetworkDegree(networkDegree);
+}
+
 void MainScene::enableEditMode()
 {
     algo_steps_counter = 0;
     networkPaths.clear();
+    undrawPath();
 }
 
 void MainScene::feelIdtoNodeMap()
@@ -260,6 +421,7 @@ void MainScene::addLine()
         networkLines.append(line);
         addItem(line);
     }
+    calculateNetworkDegree();
 }
 
 void MainScene::addNode(const QPointF &point)
@@ -281,6 +443,7 @@ void MainScene::commonNodeCreationPart(NetworkNode *node)
     addItem(node);
     node->setFlag(QGraphicsItem::ItemIsMovable);
     qDebug() << "Network node was added! wiht id = " << node->getId();
+    calculateNetworkDegree();
 }
 
 void MainScene::updateAll(const QList<QRectF> &region)

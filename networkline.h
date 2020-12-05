@@ -19,12 +19,14 @@ public:
     NetworkNode* returnOtherNode(NetworkNode* node);
     void update();
     int getWeight() const {return weight;}
-
+    void setWeight(int weight);
     void setPathPart();
     void unsetPathPart();
 
     bool getIsHalfDuplex() const;
     void setIsHalfDuplex(bool value);
+
+    int bytesPerTick();
 
 private:
     QRectF boundingRect() const override;
@@ -41,9 +43,16 @@ private:
     bool isPathPart = false;
     QPen defaultPen;
 
+signals:
+    void showLineDetails(NetworkLine *line);
+
 protected:
     void contextMenuEvent(QGraphicsSceneContextMenuEvent *event) override;
     void paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget) override;
+
+    // QGraphicsItem interface
+protected:
+    void mousePressEvent(QGraphicsSceneMouseEvent *event) override;
 };
 
 #endif // NETWORKLINE_H

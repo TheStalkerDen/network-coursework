@@ -18,6 +18,8 @@ public:
     QList<PathElement*> getPath() const;
     QString getTextReprez() const;
 
+    void addToPath(PathElement* pathElemet);
+
 private:
     QList<PathElement*> path;
 
