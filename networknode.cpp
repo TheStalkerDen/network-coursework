@@ -6,6 +6,7 @@
 #include <QIcon>
 #include <QMenu>
 #include <QGraphicsSceneMouseEvent>
+#include <QRandomGenerator>
 #include <QJsonObject>
 #include <mainscene.h>
 #include <mainwindow.h>
@@ -149,8 +150,11 @@ void NetworkNode::processConnLineDetailsInBuffer(ConnectedLineDetails *detail)
                     case PackageServiceType::EnqConn: {
                         NetworkPackage *confConn = new NetworkPackage("ConfConn",package->getId()+1, id_,package->getFrom_node(),PackageType::Service);
                         confConn->setPackageServiceType(PackageServiceType::ConfConn);
+                        confConn->setPackageStatus(PackageStatus::Processing);
+                        confConn->setHeader_size(package->getHeader_size());
                         global->simData.all_packages.append(confConn);
                         global->simData.packages_on_scene.append(confConn);
+                        global->main_scene->addItem(confConn);
                         packageToProcess.append(confConn);
                         break;
                      }
@@ -163,10 +167,13 @@ void NetworkNode::processConnLineDetailsInBuffer(ConnectedLineDetails *detail)
                         break;
                     }
                     case PackageServiceType::EnqDis: {
-                        NetworkPackage *enqDis = new NetworkPackage("EnqDis",package->getId()+1, id_,package->getFrom_node(),PackageType::Service);
-                        enqDis->setPackageServiceType(PackageServiceType::EnqDis);
+                        NetworkPackage *enqDis = new NetworkPackage("ConfDis",package->getId()+1, id_,package->getFrom_node(),PackageType::Service);
+                        enqDis->setPackageServiceType(PackageServiceType::ConfDis);
+                        enqDis->setPackageStatus(PackageStatus::Processing);
+                        enqDis->setHeader_size(package->getHeader_size());
                         global->simData.all_packages.append(enqDis);
                         global->simData.packages_on_scene.append(enqDis);
+                        global->main_scene->addItem(enqDis);
                         packageToProcess.append(enqDis);
                         break;
                     }
@@ -174,7 +181,7 @@ void NetworkNode::processConnLineDetailsInBuffer(ConnectedLineDetails *detail)
                         break;
                     }
                 }
-
+                break;
             case PackageType::Info:
                 switch (global->sendingType) {
                     case SendingType::Datagram:
@@ -183,8 +190,11 @@ void NetworkNode::processConnLineDetailsInBuffer(ConnectedLineDetails *detail)
                     case SendingType::VirualChannel: {
                         NetworkPackage *confPackage = new NetworkPackage("ConfPackege",package->getId()+1, id_,package->getFrom_node(),PackageType::Service);
                         confPackage->setPackageServiceType(PackageServiceType::PackageConfirmation);
+                        confPackage->setPackageStatus(PackageStatus::Processing);
+                        confPackage->setHeader_size(package->getHeader_size());
                         global->simData.all_packages.append(confPackage);
                         global->simData.packages_on_scene.append(confPackage);
+                        global->main_scene->addItem(confPackage);
                         packageToProcess.append(confPackage);
                         break;
                     }
@@ -221,15 +231,20 @@ void NetworkNode::processPackagesInNode()
         if(package->getPackageStatus() == PackageStatus::InBuff){
             package->setPackageStatus(PackageStatus::Processing);
         } else if(package->getPackageStatus() == PackageStatus::Processing){
+            package->addToPackageLog(QString("Pakage is processing in node %1. (tick = %2)").arg(id_).arg(global->simData.tick_count));
+            package->setVisible(true);
+            package->update();
             package->setTTL(package->getTTL() -1);
-            if(package->getTTL() == 0){
+            if(package->getTTL() <= 0){
                 qDebug() << "TTL is bad";
+                package->addToPackageLog(QString("TTL is zero. Package was killed! (tick = %1)").arg(global->simData.tick_count));
                 package->setPackageStatus(PackageStatus::Killed);
                 global->simData.packages_on_scene.removeAll(package);
                 itr.remove();
             }
             int nextNode = calculateNextNode(package);
             package->setPackageStatus(PackageStatus::OutBuff);
+            package->addToPackageLog(QString("Package was moved to OUT buffer to node %1. (tick = %2)").arg(nextNode).arg(global->simData.tick_count));
             nodeToLine[nextNode]->buffers.out_buf.enqueue(package);
             itr.remove();
         }
@@ -239,6 +254,9 @@ void NetworkNode::processPackagesInNode()
 
 void NetworkNode::processConnLineDetailsOutBuffer(ConnectedLineDetails *details)
 {
+    qDebug() << "start processing in OUT BUFFER of " << details->connectedNode->getId();
+    int canBeSentBytes = details->line->bytesPerTick();
+
     auto generatePathElement = [&](){
         PathElement *pathElem = new PathElement();
         pathElem->line = details->line;
@@ -246,8 +264,41 @@ void NetworkNode::processConnLineDetailsOutBuffer(ConnectedLineDetails *details)
         return pathElem;
     };
 
-    qDebug() << "start processing in OUT BUFFER of " << details->connectedNode->getId();
-    int canBeSentBytes = details->line->bytesPerTick();
+    auto defaultTransferActions = [&](NetworkPackage* currentPackage){
+        if(currentPackage->getBytesToSentThrougLine() > canBeSentBytes){
+            currentPackage->setBytesToSentThrougLine(currentPackage->getBytesToSentThrougLine() - canBeSentBytes);
+            currentPackage->setPosition(this,details->connectedNode);
+            canBeSentBytes = 0;
+        } else if  (currentPackage->getBytesToSentThrougLine() == canBeSentBytes){
+            if(QRandomGenerator::global()->bounded(0,100) < details->line->getError_possibility()){
+                currentPackage->addToPackageLog(QString("Error transfer. Will be transfered again. (tick = %1)\n").arg(global->simData.tick_count));
+                currentPackage->setBytesToSentThrougLine(currentPackage->getPackageSize());
+                currentPackage->setPosition(this,details->connectedNode);
+            }else {
+                details->buffers.out_buf.dequeue();
+                currentPackage->setBytesToSentThrougLine(currentPackage->getBytesToSentThrougLine() - canBeSentBytes);
+                currentPackage->setPosition(this,details->connectedNode);
+                currentPackage->addPathElement(generatePathElement());
+                details->connectedNode->addToInBufferPackageFromNode(id_, currentPackage);
+                canBeSentBytes = 0;
+            }
+        } else {
+            if(QRandomGenerator::global()->bounded(0,100) < details->line->getError_possibility()){
+                currentPackage->addToPackageLog(QString("Error transfer. Will be transfered again. (tick = %1)\n").arg(global->simData.tick_count));
+                currentPackage->setBytesToSentThrougLine(currentPackage->getPackageSize());
+                currentPackage->setPosition(this,details->connectedNode);
+            } else {
+                canBeSentBytes -= currentPackage->getBytesToSentThrougLine();
+                details->buffers.out_buf.dequeue();
+                currentPackage->setBytesToSentThrougLine(0);
+                currentPackage->setPosition(this,details->connectedNode);
+                currentPackage->addPathElement(generatePathElement());
+                details->connectedNode->addToInBufferPackageFromNode(id_, currentPackage);
+            }
+        }
+    };
+
+
     if(details->buffers.out_buf.isEmpty()){
         qDebug() << "out buffer is empty";
         return;
@@ -259,46 +310,10 @@ void NetworkNode::processConnLineDetailsOutBuffer(ConnectedLineDetails *details)
             qDebug() << "package status is OutBuff";
             currentPackage->setPackageStatus(PackageStatus::Sending);
             currentPackage->setBytesToSentThrougLine(currentPackage->getPackageSize());
-            if(currentPackage->getBytesToSentThrougLine() > canBeSentBytes){
-                currentPackage->setBytesToSentThrougLine(currentPackage->getBytesToSentThrougLine() - canBeSentBytes);
-                currentPackage->setPosition(this,details->connectedNode);
-                canBeSentBytes = 0;
-            } else if  (currentPackage->getBytesToSentThrougLine() == canBeSentBytes){
-                details->buffers.out_buf.dequeue();
-                currentPackage->setBytesToSentThrougLine(currentPackage->getBytesToSentThrougLine() - canBeSentBytes);
-                currentPackage->setPosition(this,details->connectedNode);
-                currentPackage->addPathElement(generatePathElement());
-                details->connectedNode->addToInBufferPackageFromNode(id_, currentPackage);
-                canBeSentBytes = 0;
-            } else {
-                canBeSentBytes -= currentPackage->getBytesToSentThrougLine();
-                details->buffers.out_buf.dequeue();
-                currentPackage->setBytesToSentThrougLine(0);
-                currentPackage->setPosition(this,details->connectedNode);
-                currentPackage->addPathElement(generatePathElement());
-                details->connectedNode->addToInBufferPackageFromNode(id_, currentPackage);
-            }
+            defaultTransferActions(currentPackage);
         } else if(currentPackage->getPackageStatus() == PackageStatus::Sending){
             qDebug() << "package status is Sending";
-            if(currentPackage->getBytesToSentThrougLine() > canBeSentBytes){
-                currentPackage->setBytesToSentThrougLine(currentPackage->getBytesToSentThrougLine() - canBeSentBytes);
-                currentPackage->setPosition(this,details->connectedNode);
-                canBeSentBytes = 0;
-            } else if  (currentPackage->getBytesToSentThrougLine() == canBeSentBytes){
-                details->buffers.out_buf.dequeue();
-                currentPackage->setBytesToSentThrougLine(currentPackage->getBytesToSentThrougLine() - canBeSentBytes);
-                currentPackage->setPosition(this,details->connectedNode);
-                currentPackage->addPathElement(generatePathElement());
-                details->connectedNode->addToInBufferPackageFromNode(id_, currentPackage);
-                canBeSentBytes = 0;
-            } else {
-                canBeSentBytes -= currentPackage->getBytesToSentThrougLine();
-                details->buffers.out_buf.dequeue();
-                currentPackage->setBytesToSentThrougLine(0);
-                currentPackage->setPosition(this,details->connectedNode);
-                currentPackage->addPathElement(generatePathElement());
-                details->connectedNode->addToInBufferPackageFromNode(id_, currentPackage);
-            }
+            defaultTransferActions(currentPackage);
         } else {
             qDebug() << "was catched package status with name";
             details->buffers.out_buf.dequeue();
@@ -368,6 +383,7 @@ void NetworkNode::unsetPathPart()
 
 void NetworkNode::initBeforeSimulation()
 {
+    isSendNode = false;
     nodeToLine.clear();
     for(auto& line : connectedLines){
         ConnectedLineDetails *details = new ConnectedLineDetails;

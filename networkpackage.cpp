@@ -66,7 +66,7 @@ void NetworkPackage::setData_size(int value)
 
 void NetworkPackage::addToPackageLog(QString info)
 {
-    packageLog.append(info);
+    packageLog.append(info + "\n");
 }
 
 void NetworkPackage::addPathElement(PathElement *pathElement)
@@ -77,6 +77,16 @@ void NetworkPackage::addPathElement(PathElement *pathElement)
 int NetworkPackage::getPackageSize()
 {
     return header_size + data_size;
+}
+
+void NetworkPackage::incrementSendingTime()
+{
+    sending_time++;
+}
+
+int NetworkPackage::getSending_time() const
+{
+    return sending_time;
 }
 
 int NetworkPackage::getBytesToSentThrougLine() const
@@ -162,6 +172,12 @@ QRectF NetworkPackage::boundingRect() const
 
 void NetworkPackage::paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget)
 {
-    painter->setPen(QColor(Qt::red));
+    if(type == PackageType::Info){
+        painter->setPen(QColor(Qt::blue));
+        painter->setFont(QFont("Times",10,QFont::Bold));
+    } else {
+        painter->setPen(QColor(Qt::green));
+        painter->setFont(QFont("Times",10,QFont::Bold));
+    }
     painter->drawText(QPointF(0,0) ,packageName);
 }

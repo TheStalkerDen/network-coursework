@@ -33,6 +33,7 @@ public:
     void addPathElement(PathElement* pathElement);
 
     int getPackageSize();
+    void incrementSendingTime();
 
 private:
     PackageType type;
@@ -42,6 +43,7 @@ private:
     QString packageLog;
     NetworkPath *packagePath = new NetworkPath({});
     int id;
+    int sending_time = 0; //show how long package was transferred
     int header_size = 0;
     int data_size = 0;
     int dest_node = 0;
@@ -70,6 +72,7 @@ public:
     void setDest_node(int value);
     int getBytesToSentThrougLine() const;
     void setBytesToSentThrougLine(int value);
+    int getSending_time() const;
 };
 
 #endif // NETWORKPACKAGE_H

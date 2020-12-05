@@ -66,9 +66,20 @@ void SimulationDataWidget::showPackageData(NetworkPackage *package)
 {
     qDebug() << "start show package data";
     global->main_scene->drawPath(package->getPackagePath());
-    ui->packagIdLabel->setText(QString::number(package->getId()));
-    ui->packageSize->setText(QString::number(package->getData_size() + package->getHeader_size()));
+    ui->packageIdLabel->setText(QString::number(package->getId()));
+    ui->packageSizeLabel->setText(QString::number(package->getData_size() + package->getHeader_size()));
     ui->packageLog->setText(package->getPackageLog());
+    ui->packageNameLabel->setText(package->getPackageName());
+    ui->dataSizeLabel->setText(QString::number(package->getData_size()));
+    ui->headerSizeLabel->setText(QString::number(package->getHeader_size()));
+    QString packageType;
+    if(package->getType() == PackageType::Info){
+        packageType = "Info";
+    } else {
+        packageType = "Service";
+    }
+    ui->packageTypeLabel->setText(packageType);
+    ui->sendingTimeLabel->setText(QString::number(package->getSending_time()));
 }
 
 void SimulationDataWidget::on_packagesList_clicked(const QModelIndex &index)

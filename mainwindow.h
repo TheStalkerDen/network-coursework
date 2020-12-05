@@ -74,11 +74,14 @@ private slots:
 
     void on_startSendingButton_clicked();
 
+    void on_error_chanceLineEdit_returnPressed();
+
 private:
     Ui::MainWindow *ui;
     MainScene *scene;
-    NetworkNode *currentShowNode;
-    NetworkLine *currentSelectedLine;
+    NetworkNode *currentShowNode = nullptr;
+    NetworkLine *currentSelectedLine = nullptr;
     Global* global;
+    void setNodesComboBoxes();
 };
 #endif // MAINWINDOW_H

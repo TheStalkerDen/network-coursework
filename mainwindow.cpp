@@ -49,10 +49,14 @@ void MainWindow::showNodeInfo(NetworkNode *node)
 
 void MainWindow::showLineDetails(NetworkLine *line)
 {
+    if(currentSelectedLine && currentSelectedLine != line){
+        currentSelectedLine->setIsSelected(false);
+    }
     currentSelectedLine = line;
     ui->isHalfDuplex->setChecked(line->getIsHalfDuplex());
     int index = ui->lineWeightComboButton->findText(QString::number(line->getWeight()));
     ui->lineWeightComboButton->setCurrentIndex(index);
+    ui->error_chanceLineEdit->setText(QString::number(currentSelectedLine->getError_possibility()));
 }
 
 void MainWindow::showNetworkDegree(double networkDegree)
@@ -80,7 +84,9 @@ void MainWindow::setStationsLists()
     for(auto& node: stations){
         stationsStringList << QString::number(node->getId());
     }
+    ui->station1ComboBox->clear();
     ui->station1ComboBox->addItems(stationsStringList);
+    ui->station2ComboBox->clear();
     ui->station2ComboBox->addItems(stationsStringList);
 }
 
@@ -205,6 +211,9 @@ void MainWindow::on_startRoutingAlgoButton_clicked()
     global->is_simulation = true;
     ui->graphEditorTab->setDisabled(true);
     ui->enableEditModeButton->setEnabled(true);
+    if(currentSelectedLine){
+        currentSelectedLine->setIsSelected(false);
+    }
 }
 
 void MainWindow::on_nextStepButton_clicked()
@@ -215,6 +224,7 @@ void MainWindow::on_nextStepButton_clicked()
         ui->routingTableConfGroupBox->setDisabled(true);
         ui->sendTab->setEnabled(true);
         setStationsLists();
+        setNodesComboBoxes();
     }
 }
 
@@ -225,6 +235,7 @@ void MainWindow::on_endConfigurationButton_clicked()
     ui->routingTableConfGroupBox->setDisabled(true);
     ui->sendTab->setEnabled(true);
     setStationsLists();
+    setNodesComboBoxes();
 }
 
 void MainWindow::on_enableEditModeButton_clicked()
@@ -245,8 +256,8 @@ void MainWindow::on_enableEditModeButton_clicked()
 
 void MainWindow::on_getShortestPathsButton_clicked()
 {
-    int node1 = ui->node1LineEdit->text().toInt();
-    int node2 = ui->node2LineEdit->text().toInt();;
+    int node1 = ui->node1ComboBox->currentText().toInt();
+    int node2 = ui->node2ComboBox->currentText().toInt();
     if(node1 != node2 && scene->existsNode(node1) && scene->existsNode(node2)){
         qDebug() << "Start get shortest paths between " << node1 << " " << node2;
         scene->getShortestPaths(node1,node2);
@@ -297,5 +308,34 @@ void MainWindow::on_startSendingButton_clicked()
 
         bool isRealTime = ui->realtimeRadioButton->isChecked();
         scene->startSimulation(node1,node2,messageSize,packageSize,headerSize,type,isRealTime);
+    }
+}
+
+void MainWindow::setNodesComboBoxes()
+{
+    QList<NetworkNode*> stations = scene->getStationsList();
+    std::sort(stations.begin(),stations.end(),[](NetworkNode* node1, NetworkNode* node2){
+        if(node1->getId() < node2->getId()){
+            return true;
+        }
+        return false;
+    });
+
+    QStringList stationsStringList;
+
+    for(auto& node: stations){
+        stationsStringList << QString::number(node->getId());
+    }
+
+    ui->node1ComboBox->clear();
+    ui->node1ComboBox->addItems(stationsStringList);
+    ui->node2ComboBox->clear();
+    ui->node2ComboBox->addItems(stationsStringList);
+}
+
+void MainWindow::on_error_chanceLineEdit_returnPressed()
+{
+    if(currentSelectedLine){
+        currentSelectedLine->setError_possibility(ui->error_chanceLineEdit->text().toInt());
     }
 }

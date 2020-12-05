@@ -22,7 +22,7 @@
       </property>
       <widget class="QTabWidget" name="maniplationTab">
        <property name="currentIndex">
-        <number>1</number>
+        <number>0</number>
        </property>
        <widget class="QWidget" name="graphEditorTab">
         <attribute name="title">
@@ -94,7 +94,10 @@
               <string>Line</string>
              </property>
              <layout class="QGridLayout" name="gridLayout_4">
-              <item row="0" column="1">
+              <item row="2" column="1">
+               <widget class="QLineEdit" name="error_chanceLineEdit"/>
+              </item>
+              <item row="0" column="2">
                <widget class="QComboBox" name="lineWeightComboButton">
                 <item>
                  <property name="text">
@@ -163,17 +166,24 @@
                 </item>
                </widget>
               </item>
-              <item row="0" column="0">
-               <widget class="QLabel" name="label_3">
+              <item row="2" column="0">
+               <widget class="QLabel" name="label_9">
                 <property name="text">
-                 <string>Weight</string>
+                 <string>ErrorChance</string>
                 </property>
                </widget>
               </item>
-              <item row="1" column="0">
+              <item row="1" column="0" colspan="2">
                <widget class="QCheckBox" name="isHalfDuplex">
                 <property name="text">
                  <string>HalfDuplex</string>
+                </property>
+               </widget>
+              </item>
+              <item row="0" column="0" colspan="2">
+               <widget class="QLabel" name="label_3">
+                <property name="text">
+                 <string>Weight</string>
                 </property>
                </widget>
               </item>
@@ -515,38 +525,38 @@
             <string>Show paths</string>
            </property>
            <layout class="QGridLayout" name="gridLayout_7">
-            <item row="0" column="1">
-             <widget class="QLineEdit" name="node1LineEdit"/>
+            <item row="6" column="0" colspan="4">
+             <widget class="QListView" name="pathsListView"/>
             </item>
-            <item row="0" column="0">
-             <widget class="QLabel" name="node1Label">
-              <property name="text">
-               <string>Node1</string>
-              </property>
-             </widget>
+            <item row="7" column="0" colspan="3">
+             <widget class="QTextEdit" name="textPathReprez"/>
             </item>
-            <item row="0" column="3">
-             <widget class="QLineEdit" name="node2LineEdit"/>
-            </item>
-            <item row="1" column="0" colspan="4">
+            <item row="5" column="0" colspan="4">
              <widget class="QPushButton" name="getShortestPathsButton">
               <property name="text">
                <string>GetShortestPaths</string>
               </property>
              </widget>
             </item>
-            <item row="2" column="0" colspan="4">
-             <widget class="QListView" name="pathsListView"/>
+            <item row="0" column="0">
+             <widget class="QLabel" name="node1Label">
+              <property name="text">
+               <string>Station1</string>
+              </property>
+             </widget>
             </item>
             <item row="0" column="2">
              <widget class="QLabel" name="node2Label">
               <property name="text">
-               <string>Node2</string>
+               <string>Station 2</string>
               </property>
              </widget>
             </item>
-            <item row="3" column="0" colspan="3">
-             <widget class="QTextEdit" name="textPathReprez"/>
+            <item row="0" column="1">
+             <widget class="QComboBox" name="node1ComboBox"/>
+            </item>
+            <item row="0" column="3">
+             <widget class="QComboBox" name="node2ComboBox"/>
             </item>
            </layout>
           </widget>

@@ -78,10 +78,12 @@ void MainScene::initializeFromJson(QJsonObject &jsonObj)
         int node2_id = lineObj["node2_id"].toInt();
         int weight = lineObj["weight"].toInt();
         bool is_half_duplex = lineObj["is_half_duplex"].toBool();
+        int error_chance = lineObj["error_chance"].toInt();
         NetworkNode *node1 = idToNodeMap[node1_id];
         NetworkNode *node2 = idToNodeMap[node2_id];
         NetworkLine *line = new NetworkLine(node1,node2,weight);
         line->setIsHalfDuplex(is_half_duplex);
+        line->setError_possibility(error_chance);
         node1->connectLine(line);
         node2->connectLine(line);
         networkLines.append(line);
@@ -256,6 +258,7 @@ void MainScene::startSimulation(int fromNode, int toNode, int messageSize, int p
     QQueue<NetworkPackage*> *shouldSend = new QQueue<NetworkPackage*>;
 
     global->simData.all_packages.clear();
+    global->simData.packages_on_scene.clear();
     global->sendingType = send_type;
 
     auto generatePackagesToSend = [&](){
@@ -317,6 +320,13 @@ void MainScene::startSimulation(int fromNode, int toNode, int messageSize, int p
     auto simulationTick = [&](MainScene* scene){
         qDebug() << "process tick in scene: " << scene->global->simData.tick_count;
         scene->global->simData.tick_count++;
+        for(auto& package: scene->global->simData.packages_on_scene){
+            if(package->getPackageStatus() != PackageStatus::Init ||
+                    package->getPackageStatus() != PackageStatus::Killed ||
+                    package->getPackageStatus() != PackageStatus::Sent){
+                package->incrementSendingTime();
+            }
+        }
         for(auto& node:  scene->networkNodes){
             node->simulationTick();
         }
@@ -383,6 +393,11 @@ void MainScene::enableEditMode()
     algo_steps_counter = 0;
     networkPaths.clear();
     undrawPath();
+}
+
+QMap<int, NetworkNode *> MainScene::getIdToNodeMap() const
+{
+    return idToNodeMap;
 }
 
 void MainScene::feelIdtoNodeMap()

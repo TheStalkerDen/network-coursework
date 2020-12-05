@@ -28,6 +28,11 @@ public:
 
     int bytesPerTick();
 
+    int getError_possibility() const;
+    void setError_possibility(int value);
+
+    void setIsSelected(bool value);
+
 private:
     QRectF boundingRect() const override;
     QPointF calculateMiddlePoint();
@@ -39,9 +44,11 @@ private:
     NetworkNode *node2;
     QGraphicsLineItem *line;
     Global *global = Global::GetInstance();
+    int error_possibility = 0;
 
     bool isPathPart = false;
     QPen defaultPen;
+    bool isSelected = false;
 
 signals:
     void showLineDetails(NetworkLine *line);

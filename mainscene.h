@@ -56,6 +56,8 @@ public:
     void enableEditMode();
 
     bool isSelect2Node = false;  //should be true when was selected first node for connecting
+    QMap<int, NetworkNode *> getIdToNodeMap() const;
+
 private:
     int max_id = 0;
 

@@ -45,6 +45,54 @@
        </rect>
       </property>
       <layout class="QGridLayout" name="gridLayout_2">
+       <item row="3" column="1">
+        <widget class="QLabel" name="packageSizeLabel">
+         <property name="text">
+          <string>_</string>
+         </property>
+        </widget>
+       </item>
+       <item row="6" column="1">
+        <widget class="QLabel" name="sendingTimeLabel">
+         <property name="text">
+          <string>_</string>
+         </property>
+        </widget>
+       </item>
+       <item row="6" column="2">
+        <spacer name="horizontalSpacer_4">
+         <property name="orientation">
+          <enum>Qt::Horizontal</enum>
+         </property>
+         <property name="sizeHint" stdset="0">
+          <size>
+           <width>40</width>
+           <height>20</height>
+          </size>
+         </property>
+        </spacer>
+       </item>
+       <item row="6" column="0">
+        <widget class="QLabel" name="label_3">
+         <property name="text">
+          <string>sendingTime</string>
+         </property>
+        </widget>
+       </item>
+       <item row="5" column="0">
+        <widget class="QLabel" name="label_6">
+         <property name="text">
+          <string>dataSize</string>
+         </property>
+        </widget>
+       </item>
+       <item row="5" column="1">
+        <widget class="QLabel" name="dataSizeLabel">
+         <property name="text">
+          <string>_</string>
+         </property>
+        </widget>
+       </item>
        <item row="0" column="0">
         <widget class="QLabel" name="packagIdLabel">
          <property name="text">
@@ -52,22 +100,45 @@
          </property>
         </widget>
        </item>
-       <item row="0" column="1">
-        <widget class="QLabel" name="packageId">
+       <item row="7" column="0" colspan="3">
+        <widget class="QTextEdit" name="packageLog"/>
+       </item>
+       <item row="3" column="2">
+        <spacer name="horizontalSpacer_">
+         <property name="orientation">
+          <enum>Qt::Horizontal</enum>
+         </property>
+         <property name="sizeHint" stdset="0">
+          <size>
+           <width>40</width>
+           <height>20</height>
+          </size>
+         </property>
+        </spacer>
+       </item>
+       <item row="4" column="0">
+        <widget class="QLabel" name="label_4">
          <property name="text">
-          <string>_</string>
+          <string>headerSize</string>
          </property>
         </widget>
        </item>
-       <item row="1" column="0">
-        <widget class="QLabel" name="packageSizeLabel">
+       <item row="3" column="0">
+        <widget class="QLabel" name="size_label">
          <property name="text">
           <string>packageSize:</string>
          </property>
         </widget>
        </item>
-       <item row="1" column="1">
-        <widget class="QLabel" name="packageSize">
+       <item row="1" column="0">
+        <widget class="QLabel" name="label_8">
+         <property name="text">
+          <string>Package name</string>
+         </property>
+        </widget>
+       </item>
+       <item row="4" column="1">
+        <widget class="QLabel" name="headerSizeLabel">
          <property name="text">
           <string>_</string>
          </property>
@@ -86,21 +157,33 @@
          </property>
         </spacer>
        </item>
-       <item row="1" column="2">
-        <spacer name="horizontalSpacer_4">
-         <property name="orientation">
-          <enum>Qt::Horizontal</enum>
+       <item row="1" column="1">
+        <widget class="QLabel" name="packageNameLabel">
+         <property name="text">
+          <string>_</string>
          </property>
-         <property name="sizeHint" stdset="0">
-          <size>
-           <width>40</width>
-           <height>20</height>
-          </size>
-         </property>
-        </spacer>
+        </widget>
        </item>
-       <item row="2" column="0" colspan="3">
-        <widget class="QTextEdit" name="packageLog"/>
+       <item row="0" column="1">
+        <widget class="QLabel" name="packageIdLabel">
+         <property name="text">
+          <string>_</string>
+         </property>
+        </widget>
+       </item>
+       <item row="2" column="0">
+        <widget class="QLabel" name="label_10">
+         <property name="text">
+          <string>Package type</string>
+         </property>
+        </widget>
+       </item>
+       <item row="2" column="1">
+        <widget class="QLabel" name="packageTypeLabel">
+         <property name="text">
+          <string>_</string>
+         </property>
+        </widget>
        </item>
       </layout>
      </widget>

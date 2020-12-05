@@ -87,7 +87,7 @@ private:
     QMap<int, ConnectedLineDetails*> nodeToLine {};
     QQueue<NetworkPackage*> *shouldSend {};
     QList<NetworkPackage*> packageToProcess {};
-    bool sendNextPackage = false; //for logic and virtual channels
+    bool sendNextPackage = true; //for logic and virtual channels
     bool isSendNode = false;
 
     QRectF boundingRect() const override;

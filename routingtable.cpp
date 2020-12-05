@@ -1,14 +1,17 @@
 #include "routingtable.h"
+#include "mainscene.h"
 
 RoutingTable::RoutingTable(int node_id, QList<RoutingEntity> init_list, RoutingMetrics metrics, QObject *parent)
     :QAbstractTableModel(parent), m_node_id(node_id)
 {
     m_routing_metrics = metrics;
     for(auto& init_elem: init_list){
-        if(m_routing_metrics == RoutingMetrics::ByWeights){
-            m_routing_table.insert(init_elem.nodes[0], init_elem);
-        } else {
-            m_routing_table.insert(init_elem.nodes[0], {init_elem.nodes, 0});
+        if(global->main_scene->getIdToNodeMap()[init_elem.nodes[0]]->getHostStatus() == true){
+            if(m_routing_metrics == RoutingMetrics::ByWeights){
+                m_routing_table.insert(init_elem.nodes[0], init_elem);
+            } else {
+                m_routing_table.insert(init_elem.nodes[0], {init_elem.nodes, 0});
+            }
         }
         if(m_routing_metrics == RoutingMetrics::ByWeights){
             m_weights[init_elem.nodes[0]] = init_elem.metrics;

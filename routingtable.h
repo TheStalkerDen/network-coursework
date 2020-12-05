@@ -1,6 +1,8 @@
 #ifndef ROUTINGTABLE_H
 #define ROUTINGTABLE_H
 
+#include "global.h"
+
 #include <QAbstractTableModel>
 #include <QList>
 #include <QMap>
@@ -40,6 +42,7 @@ private:
     int m_effective_row_count;
 
     void generateRows();
+    Global *global = Global::GetInstance();
 
     // QAbstractItemModel interface
 public:

@@ -29,6 +29,7 @@ void NetworkLine::writeJson(QJsonObject &jsonObj) const
     jsonObj["node2_id"] = node2->getId();
     jsonObj["is_half_duplex"] = isHalfDuplex;
     jsonObj["weight"] = weight;
+    jsonObj["error_chance"] = error_possibility;
 }
 
 void NetworkLine::detachFromOtherNode(NetworkNode *node)
@@ -73,7 +74,7 @@ void NetworkLine::update()
 void NetworkLine::setWeight(int weight)
 {
     this->weight = weight;
-    emit update();
+    emit QGraphicsObject::update();
 }
 
 void NetworkLine::setPathPart()
@@ -99,6 +100,22 @@ QRectF NetworkLine::boundingRect() const
 QPointF NetworkLine::calculateMiddlePoint()
 {
     return (node1->pos() + node2->pos())/2;
+}
+
+void NetworkLine::setIsSelected(bool value)
+{
+    isSelected = value;
+    emit QGraphicsObject::update();
+}
+
+int NetworkLine::getError_possibility() const
+{
+    return error_possibility;
+}
+
+void NetworkLine::setError_possibility(int value)
+{
+    error_possibility = value;
 }
 
 bool NetworkLine::getIsHalfDuplex() const
@@ -149,6 +166,11 @@ void NetworkLine::paint(QPainter *painter, const QStyleOptionGraphicsItem *optio
 {
     Q_UNUSED(option);
     Q_UNUSED(widget);
+    if(isSelected){
+        painter->setPen(Qt::red);
+    } else {
+        painter->setPen(Qt::black);
+    }
     painter->setFont(QFont("Times",10,QFont::Bold));
     painter->drawText(1,0,QString::number(weight));
     if(isPathPart){
@@ -160,5 +182,7 @@ void NetworkLine::paint(QPainter *painter, const QStyleOptionGraphicsItem *optio
 void NetworkLine::mousePressEvent(QGraphicsSceneMouseEvent *event)
 {
     qDebug() << "Line was pressed";
+    isSelected = true;
+    emit QGraphicsObject::update();
     emit showLineDetails(this);
 }
