@@ -74,7 +74,7 @@ void NetworkPackage::addPathElement(PathElement *pathElement)
     packagePath->addToPath(pathElement);
 }
 
-int NetworkPackage::getPackageSize()
+int NetworkPackage::getPackageSize() const
 {
     return header_size + data_size;
 }

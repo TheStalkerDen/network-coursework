@@ -32,7 +32,7 @@ public:
 
     void addPathElement(PathElement* pathElement);
 
-    int getPackageSize();
+    int getPackageSize() const;
     void incrementSendingTime();
 
 private:

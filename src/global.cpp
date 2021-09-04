@@ -15,3 +15,9 @@ Global::Global()
 
 
 }
+
+int SimulationData::getPackageId()
+{
+    current_max_id++;
+    return current_max_id;
+}

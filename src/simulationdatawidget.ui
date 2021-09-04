@@ -204,45 +204,59 @@
       <enum>QFrame::Raised</enum>
      </property>
      <layout class="QGridLayout" name="gridLayout_3">
-      <item row="5" column="0">
+      <item row="7" column="0">
        <widget class="QLabel" name="label_9">
         <property name="text">
          <string>info bytes sent:</string>
         </property>
        </widget>
       </item>
-      <item row="0" column="0">
-       <widget class="QLabel" name="ticksCountLabel">
+      <item row="8" column="0">
+       <widget class="QLabel" name="label_14">
         <property name="text">
-         <string>ticks:</string>
+         <string>service bytes sent:</string>
         </property>
        </widget>
       </item>
-      <item row="2" column="0">
-       <widget class="QLabel" name="label_2">
+      <item row="6" column="0">
+       <widget class="QLabel" name="label_7">
         <property name="text">
-         <string>infoPackageCount</string>
+         <string>bytes were sent:</string>
         </property>
        </widget>
       </item>
-      <item row="1" column="1">
-       <widget class="QLabel" name="packageCountLabel">
+      <item row="9" column="1">
+       <widget class="QLabel" name="sentHeaderBytes">
         <property name="text">
          <string>_</string>
         </property>
        </widget>
       </item>
-      <item row="6" column="1">
-       <widget class="QLabel" name="sentServiceBytesLabel">
+      <item row="9" column="0">
+       <widget class="QLabel" name="label_13">
+        <property name="text">
+         <string>header bytes sent:</string>
+        </property>
+       </widget>
+      </item>
+      <item row="2" column="1">
+       <widget class="QLabel" name="infoPackageCountLabel">
         <property name="text">
          <string>_</string>
         </property>
        </widget>
       </item>
-      <item row="1" column="0">
-       <widget class="QLabel" name="label">
+      <item row="4" column="0">
+       <widget class="QLabel" name="label_11">
         <property name="text">
-         <string>packageCount:</string>
+         <string>lostPackagesCount:</string>
+        </property>
+       </widget>
+      </item>
+      <item row="4" column="1">
+       <widget class="QLabel" name="lostPackagesCountLabel">
+        <property name="text">
+         <string>_</string>
         </property>
        </widget>
       </item>
@@ -259,10 +273,45 @@
         </property>
        </spacer>
       </item>
-      <item row="6" column="0">
-       <widget class="QLabel" name="label_14">
+      <item row="0" column="0">
+       <widget class="QLabel" name="ticksCountLabel">
         <property name="text">
-         <string>service bytes sent:</string>
+         <string>ticks:</string>
+        </property>
+       </widget>
+      </item>
+      <item row="1" column="1">
+       <widget class="QLabel" name="packageCountLabel">
+        <property name="text">
+         <string>_</string>
+        </property>
+       </widget>
+      </item>
+      <item row="8" column="1">
+       <widget class="QLabel" name="sentServiceBytesLabel">
+        <property name="text">
+         <string>_</string>
+        </property>
+       </widget>
+      </item>
+      <item row="2" column="0">
+       <widget class="QLabel" name="label_2">
+        <property name="text">
+         <string>infoPackageCount</string>
+        </property>
+       </widget>
+      </item>
+      <item row="0" column="1">
+       <widget class="QLabel" name="ticksCount">
+        <property name="text">
+         <string>_</string>
+        </property>
+       </widget>
+      </item>
+      <item row="1" column="0">
+       <widget class="QLabel" name="label">
+        <property name="text">
+         <string>packageCount:</string>
         </property>
        </widget>
       </item>
@@ -273,17 +322,10 @@
         </property>
        </widget>
       </item>
-      <item row="5" column="1">
-       <widget class="QLabel" name="sentInfoBytesLabel">
+      <item row="3" column="0">
+       <widget class="QLabel" name="label_5">
         <property name="text">
-         <string>_</string>
-        </property>
-       </widget>
-      </item>
-      <item row="0" column="1">
-       <widget class="QLabel" name="ticksCount">
-        <property name="text">
-         <string>_</string>
+         <string>servicelPackageCount:</string>
         </property>
        </widget>
       </item>
@@ -300,43 +342,29 @@
         </property>
        </spacer>
       </item>
-      <item row="2" column="1">
-       <widget class="QLabel" name="infoPackageCountLabel">
+      <item row="7" column="1">
+       <widget class="QLabel" name="sentInfoBytesLabel">
         <property name="text">
          <string>_</string>
         </property>
        </widget>
       </item>
-      <item row="3" column="0">
-       <widget class="QLabel" name="label_5">
-        <property name="text">
-         <string>servicelPackageCount:</string>
-        </property>
-       </widget>
-      </item>
-      <item row="4" column="0">
-       <widget class="QLabel" name="label_7">
-        <property name="text">
-         <string>bytes were sent:</string>
-        </property>
-       </widget>
-      </item>
-      <item row="4" column="1">
+      <item row="6" column="1">
        <widget class="QLabel" name="sentBytesLabel">
         <property name="text">
          <string>_</string>
         </property>
        </widget>
       </item>
-      <item row="7" column="0">
-       <widget class="QLabel" name="label_13">
+      <item row="5" column="0">
+       <widget class="QLabel" name="label_12">
         <property name="text">
-         <string>header bytes sent:</string>
+         <string>lostbytes</string>
         </property>
        </widget>
       </item>
-      <item row="7" column="1">
-       <widget class="QLabel" name="sentHeaderBytes">
+      <item row="5" column="1">
+       <widget class="QLabel" name="lostBytesLabel">
         <property name="text">
          <string>_</string>
         </property>

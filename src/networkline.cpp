@@ -102,6 +102,37 @@ QPointF NetworkLine::calculateMiddlePoint()
     return (node1->pos() + node2->pos())/2;
 }
 
+int NetworkLine::getIs_used() const
+{
+    return is_used;
+}
+
+void NetworkLine::setIs_used(int value)
+{
+    is_used = value;
+}
+
+int NetworkLine::getIs_reloading() const
+{
+    return is_reloading;
+}
+
+void NetworkLine::lineTick()
+{
+    if(is_reloading){
+        reloading_time--;
+        if(reloading_time == 0){
+            is_reloading = false;
+        }
+    }
+}
+
+void NetworkLine::reloadLine(int ticks)
+{
+    is_reloading = true;
+    reloading_time = ticks;
+}
+
 void NetworkLine::setIsSelected(bool value)
 {
     isSelected = value;
@@ -135,7 +166,7 @@ void NetworkLine::setIsHalfDuplex(bool value)
     }
 }
 
-int NetworkLine::bytesPerTick()
+int NetworkLine::bytesPerTick() const
 {
     return 1000/weight;
 }

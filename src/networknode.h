@@ -71,9 +71,11 @@ public:
     bool getIsSendNode() const;
     void setIsSendNode(bool value);
 
+    void setSendNextPackage(bool value);
+
 private:
     int id_;
-    bool hasConnectedHost_;
+    bool hasConnectedHost_ = false;
     MainScene * m_scene;
 
     bool isPathPart = false;

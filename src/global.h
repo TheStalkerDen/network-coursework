@@ -11,8 +11,11 @@ enum class SendingType;
 
 struct SimulationData{
     int tick_count = 0;
+    int current_max_id = -1;
+    int additional_service_package = 0;
     QList<NetworkPackage*> all_packages;
     QList<NetworkPackage*> packages_on_scene;
+    int getPackageId();
 };
 
 class Global

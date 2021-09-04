@@ -26,12 +26,20 @@ public:
     bool getIsHalfDuplex() const;
     void setIsHalfDuplex(bool value);
 
-    int bytesPerTick();
+    int bytesPerTick() const;
 
     int getError_possibility() const;
     void setError_possibility(int value);
 
     void setIsSelected(bool value);
+
+    void lineTick();
+    void reloadLine(int ticks);
+
+    int getIs_reloading() const;
+
+    int getIs_used() const;
+    void setIs_used(int value);
 
 private:
     QRectF boundingRect() const override;
@@ -45,10 +53,14 @@ private:
     QGraphicsLineItem *line;
     Global *global = Global::GetInstance();
     int error_possibility = 0;
+    int is_used = -1; //for half duplex , actual value is id of node that uses line
+    int reloading_time = 0; //for half duplex
+    int is_reloading = false;
 
     bool isPathPart = false;
     QPen defaultPen;
     bool isSelected = false;
+
 
 signals:
     void showLineDetails(NetworkLine *line);

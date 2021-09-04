@@ -250,6 +250,8 @@ void MainScene::startSimulation(int fromNode, int toNode, int messageSize, int p
 {
     qDebug() << "Simulation started";
     global->simData.tick_count = 0;
+    global->simData.current_max_id= -1;
+    global->simData.additional_service_package =0;
     feelIdtoNodeMap();
     for(auto& node: networkNodes){
         node->initBeforeSimulation();
@@ -267,7 +269,7 @@ void MainScene::startSimulation(int fromNode, int toNode, int messageSize, int p
             case SendingType::Datagram:
                 for(int i = 0; i < packageNumber; i++){
                     QString packageName = QString("DAT%1").arg(i);
-                    NetworkPackage* package = new NetworkPackage(packageName,i,fromNode,toNode,PackageType::Info);
+                    NetworkPackage* package = new NetworkPackage(packageName,0,fromNode,toNode,PackageType::Info);
                     package->setData_size(packageSize-headerSize);
                     package->setHeader_size(headerSize);
                     addItem(package);
@@ -287,7 +289,7 @@ void MainScene::startSimulation(int fromNode, int toNode, int messageSize, int p
                 global->simData.all_packages.append(enqConnPackage);
                 for(int i = 0; i < packageNumber; i++){
                     QString packageName = QString("Pack%1").arg(i);
-                    NetworkPackage* package = new NetworkPackage(packageName,i,fromNode,toNode,PackageType::Info);
+                    NetworkPackage* package = new NetworkPackage(packageName,0,fromNode,toNode,PackageType::Info);
                     package->setData_size(packageSize-headerSize);
                     package->setHeader_size(headerSize);
                     addItem(package);
@@ -295,7 +297,7 @@ void MainScene::startSimulation(int fromNode, int toNode, int messageSize, int p
                     shouldSend->append(package);
                     global->simData.all_packages.append(package);
                 }
-                NetworkPackage* enqDiscPackage = new NetworkPackage("EnqDisc",packageNumber+1,fromNode,toNode,PackageType::Service);
+                NetworkPackage* enqDiscPackage = new NetworkPackage("EnqDisc",0,fromNode,toNode,PackageType::Service);
                 enqDiscPackage->setPackageServiceType(PackageServiceType::EnqDis);
                 enqDiscPackage->setHeader_size(headerSize);
                 addItem(enqDiscPackage);
@@ -320,13 +322,18 @@ void MainScene::startSimulation(int fromNode, int toNode, int messageSize, int p
     auto simulationTick = [&](MainScene* scene){
         qDebug() << "process tick in scene: " << scene->global->simData.tick_count;
         scene->global->simData.tick_count++;
-        for(auto& package: scene->global->simData.packages_on_scene){
-            if(package->getPackageStatus() != PackageStatus::Init ||
-                    package->getPackageStatus() != PackageStatus::Killed ||
+        for(auto& package: scene->global->simData.all_packages){
+            if(package->getPackageStatus() != PackageStatus::Init &&
+                    package->getPackageStatus() != PackageStatus::Killed &&
                     package->getPackageStatus() != PackageStatus::Sent){
                 package->incrementSendingTime();
             }
         }
+
+        for(auto& line: scene->networkLines){
+            line->lineTick();
+        }
+
         for(auto& node:  scene->networkNodes){
             node->simulationTick();
         }
@@ -336,6 +343,7 @@ void MainScene::startSimulation(int fromNode, int toNode, int messageSize, int p
     NetworkNode* sendNode = idToNodeMap[fromNode];
     sendNode->setShouldSent(shouldSend);
     sendNode->setIsSendNode(true);
+    sendNode->setSendNextPackage(true);
 
     if(isRealtime){
         timer = new QTimer(this);
@@ -486,6 +494,7 @@ void MainScene::selectNode2(NetworkNode *node)
 
 void MainScene::startRoutingAlgorithm(RoutingMetrics rout_metr)
 {
+    feelIdtoNodeMap();
     for(auto& node: networkNodes){
         node->startOfRoutingAlgorithm(rout_metr);
     }   
