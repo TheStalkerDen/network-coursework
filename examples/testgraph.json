@@ -1,0 +1,210 @@
+{
+    "lines": [
+        {
+            "node1_id": 0,
+            "node2_id": 1,
+            "weight": 10
+        },
+        {
+            "node1_id": 2,
+            "node2_id": 1,
+            "weight": 10
+        },
+        {
+            "node1_id": 2,
+            "node2_id": 0,
+            "weight": 10
+        },
+        {
+            "node1_id": 2,
+            "node2_id": 1,
+            "weight": 10
+        },
+        {
+            "node1_id": 0,
+            "node2_id": 3,
+            "weight": 10
+        },
+        {
+            "node1_id": 1,
+            "node2_id": 3,
+            "weight": 10
+        },
+        {
+            "node1_id": 2,
+            "node2_id": 4,
+            "weight": 10
+        },
+        {
+            "node1_id": 4,
+            "node2_id": 1,
+            "weight": 10
+        },
+        {
+            "node1_id": 5,
+            "node2_id": 1,
+            "weight": 10
+        },
+        {
+            "node1_id": 6,
+            "node2_id": 5,
+            "weight": 10
+        },
+        {
+            "node1_id": 6,
+            "node2_id": 4,
+            "weight": 10
+        },
+        {
+            "node1_id": 6,
+            "node2_id": 2,
+            "weight": 10
+        },
+        {
+            "node1_id": 6,
+            "node2_id": 3,
+            "weight": 10
+        },
+        {
+            "node1_id": 8,
+            "node2_id": 9,
+            "weight": 10
+        },
+        {
+            "node1_id": 8,
+            "node2_id": 10,
+            "weight": 10
+        },
+        {
+            "node1_id": 8,
+            "node2_id": 11,
+            "weight": 10
+        },
+        {
+            "node1_id": 7,
+            "node2_id": 9,
+            "weight": 10
+        },
+        {
+            "node1_id": 8,
+            "node2_id": 7,
+            "weight": 10
+        },
+        {
+            "node1_id": 11,
+            "node2_id": 12,
+            "weight": 10
+        },
+        {
+            "node1_id": 12,
+            "node2_id": 10,
+            "weight": 10
+        },
+        {
+            "node1_id": 12,
+            "node2_id": 8,
+            "weight": 10
+        },
+        {
+            "node1_id": 10,
+            "node2_id": 11,
+            "weight": 10
+        },
+        {
+            "node1_id": 9,
+            "node2_id": 11,
+            "weight": 10
+        },
+        {
+            "node1_id": 8,
+            "node2_id": 2,
+            "weight": 10
+        }
+    ],
+    "nodes": [
+        {
+            "connectedHost": false,
+            "id": 0,
+            "x_pos": 107,
+            "y_pos": 150
+        },
+        {
+            "connectedHost": false,
+            "id": 1,
+            "x_pos": 312,
+            "y_pos": 113
+        },
+        {
+            "connectedHost": false,
+            "id": 2,
+            "x_pos": 358.01401599999997,
+            "y_pos": 247.028032
+        },
+        {
+            "connectedHost": false,
+            "id": 3,
+            "x_pos": 161,
+            "y_pos": 18
+        },
+        {
+            "connectedHost": false,
+            "id": 4,
+            "x_pos": 574,
+            "y_pos": 165
+        },
+        {
+            "connectedHost": false,
+            "id": 5,
+            "x_pos": -152.28518399999996,
+            "y_pos": -35.83180799999991
+        },
+        {
+            "connectedHost": false,
+            "id": 6,
+            "x_pos": -346.37414399999994,
+            "y_pos": 197.0749440000002
+        },
+        {
+            "connectedHost": false,
+            "id": 7,
+            "x_pos": -14.929919999999996,
+            "y_pos": 716.6361599999998
+        },
+        {
+            "connectedHost": false,
+            "id": 8,
+            "x_pos": 385.1919359999999,
+            "y_pos": 653.9304959999998
+        },
+        {
+            "connectedHost": false,
+            "id": 9,
+            "x_pos": 209.01887999999997,
+            "y_pos": 842.0474879999999
+        },
+        {
+            "connectedHost": false,
+            "id": 10,
+            "x_pos": 459.84153599999996,
+            "y_pos": 794.271744
+        },
+        {
+            "connectedHost": false,
+            "id": 11,
+            "x_pos": 379.21996799999994,
+            "y_pos": 952.5288959999998
+        },
+        {
+            "connectedHost": false,
+            "id": 12,
+            "x_pos": 659.9024639999999,
+            "y_pos": 803.2296959999995
+        },
+        {
+            "connectedHost": false,
+            "id": 13,
+            "x_pos": 647.9585279999999,
+            "y_pos": 603.1687679999999
+        }
+    ]
+}

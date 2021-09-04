@@ -1,0 +1,789 @@
+{
+    "lines": [
+        {
+            "error_chance": 0,
+            "is_half_duplex": false,
+            "node1_id": 11,
+            "node2_id": 3,
+            "weight": 18
+        },
+        {
+            "error_chance": 0,
+            "is_half_duplex": true,
+            "node1_id": 11,
+            "node2_id": 10,
+            "weight": 11
+        },
+        {
+            "error_chance": 0,
+            "is_half_duplex": false,
+            "node1_id": 10,
+            "node2_id": 4,
+            "weight": 3
+        },
+        {
+            "error_chance": 0,
+            "is_half_duplex": false,
+            "node1_id": 4,
+            "node2_id": 3,
+            "weight": 10
+        },
+        {
+            "error_chance": 0,
+            "is_half_duplex": false,
+            "node1_id": 3,
+            "node2_id": 2,
+            "weight": 11
+        },
+        {
+            "error_chance": 0,
+            "is_half_duplex": false,
+            "node1_id": 2,
+            "node2_id": 6,
+            "weight": 8
+        },
+        {
+            "error_chance": 0,
+            "is_half_duplex": false,
+            "node1_id": 6,
+            "node2_id": 4,
+            "weight": 11
+        },
+        {
+            "error_chance": 0,
+            "is_half_duplex": false,
+            "node1_id": 5,
+            "node2_id": 6,
+            "weight": 1
+        },
+        {
+            "error_chance": 0,
+            "is_half_duplex": false,
+            "node1_id": 6,
+            "node2_id": 1,
+            "weight": 11
+        },
+        {
+            "error_chance": 0,
+            "is_half_duplex": false,
+            "node1_id": 1,
+            "node2_id": 2,
+            "weight": 15
+        },
+        {
+            "error_chance": 0,
+            "is_half_duplex": false,
+            "node1_id": 1,
+            "node2_id": 0,
+            "weight": 22
+        },
+        {
+            "error_chance": 0,
+            "is_half_duplex": false,
+            "node1_id": 0,
+            "node2_id": 5,
+            "weight": 3
+        },
+        {
+            "error_chance": 0,
+            "is_half_duplex": false,
+            "node1_id": 5,
+            "node2_id": 7,
+            "weight": 3
+        },
+        {
+            "error_chance": 0,
+            "is_half_duplex": true,
+            "node1_id": 7,
+            "node2_id": 4,
+            "weight": 1
+        },
+        {
+            "error_chance": 0,
+            "is_half_duplex": false,
+            "node1_id": 7,
+            "node2_id": 8,
+            "weight": 15
+        },
+        {
+            "error_chance": 0,
+            "is_half_duplex": false,
+            "node1_id": 8,
+            "node2_id": 9,
+            "weight": 11
+        },
+        {
+            "error_chance": 0,
+            "is_half_duplex": false,
+            "node1_id": 9,
+            "node2_id": 10,
+            "weight": 11
+        },
+        {
+            "error_chance": 0,
+            "is_half_duplex": false,
+            "node1_id": 9,
+            "node2_id": 4,
+            "weight": 8
+        },
+        {
+            "error_chance": 0,
+            "is_half_duplex": false,
+            "node1_id": 24,
+            "node2_id": 27,
+            "weight": 22
+        },
+        {
+            "error_chance": 0,
+            "is_half_duplex": false,
+            "node1_id": 27,
+            "node2_id": 28,
+            "weight": 22
+        },
+        {
+            "error_chance": 0,
+            "is_half_duplex": false,
+            "node1_id": 28,
+            "node2_id": 33,
+            "weight": 26
+        },
+        {
+            "error_chance": 0,
+            "is_half_duplex": false,
+            "node1_id": 33,
+            "node2_id": 34,
+            "weight": 6
+        },
+        {
+            "error_chance": 0,
+            "is_half_duplex": true,
+            "node1_id": 34,
+            "node2_id": 35,
+            "weight": 3
+        },
+        {
+            "error_chance": 0,
+            "is_half_duplex": false,
+            "node1_id": 35,
+            "node2_id": 30,
+            "weight": 8
+        },
+        {
+            "error_chance": 0,
+            "is_half_duplex": false,
+            "node1_id": 30,
+            "node2_id": 29,
+            "weight": 5
+        },
+        {
+            "error_chance": 0,
+            "is_half_duplex": false,
+            "node1_id": 29,
+            "node2_id": 32,
+            "weight": 8
+        },
+        {
+            "error_chance": 0,
+            "is_half_duplex": true,
+            "node1_id": 32,
+            "node2_id": 25,
+            "weight": 10
+        },
+        {
+            "error_chance": 0,
+            "is_half_duplex": false,
+            "node1_id": 25,
+            "node2_id": 24,
+            "weight": 8
+        },
+        {
+            "error_chance": 0,
+            "is_half_duplex": false,
+            "node1_id": 24,
+            "node2_id": 26,
+            "weight": 26
+        },
+        {
+            "error_chance": 0,
+            "is_half_duplex": false,
+            "node1_id": 26,
+            "node2_id": 31,
+            "weight": 20
+        },
+        {
+            "error_chance": 0,
+            "is_half_duplex": false,
+            "node1_id": 31,
+            "node2_id": 33,
+            "weight": 20
+        },
+        {
+            "error_chance": 0,
+            "is_half_duplex": true,
+            "node1_id": 17,
+            "node2_id": 13,
+            "weight": 22
+        },
+        {
+            "error_chance": 0,
+            "is_half_duplex": false,
+            "node1_id": 13,
+            "node2_id": 12,
+            "weight": 3
+        },
+        {
+            "error_chance": 0,
+            "is_half_duplex": false,
+            "node1_id": 12,
+            "node2_id": 23,
+            "weight": 8
+        },
+        {
+            "error_chance": 0,
+            "is_half_duplex": false,
+            "node1_id": 23,
+            "node2_id": 21,
+            "weight": 15
+        },
+        {
+            "error_chance": 0,
+            "is_half_duplex": false,
+            "node1_id": 21,
+            "node2_id": 16,
+            "weight": 10
+        },
+        {
+            "error_chance": 0,
+            "is_half_duplex": false,
+            "node1_id": 16,
+            "node2_id": 14,
+            "weight": 3
+        },
+        {
+            "error_chance": 0,
+            "is_half_duplex": false,
+            "node1_id": 14,
+            "node2_id": 19,
+            "weight": 8
+        },
+        {
+            "error_chance": 0,
+            "is_half_duplex": false,
+            "node1_id": 19,
+            "node2_id": 20,
+            "weight": 8
+        },
+        {
+            "error_chance": 0,
+            "is_half_duplex": false,
+            "node1_id": 20,
+            "node2_id": 22,
+            "weight": 8
+        },
+        {
+            "error_chance": 0,
+            "is_half_duplex": false,
+            "node1_id": 22,
+            "node2_id": 17,
+            "weight": 26
+        },
+        {
+            "error_chance": 0,
+            "is_half_duplex": false,
+            "node1_id": 22,
+            "node2_id": 15,
+            "weight": 18
+        },
+        {
+            "error_chance": 0,
+            "is_half_duplex": false,
+            "node1_id": 15,
+            "node2_id": 13,
+            "weight": 26
+        },
+        {
+            "error_chance": 0,
+            "is_half_duplex": false,
+            "node1_id": 15,
+            "node2_id": 18,
+            "weight": 5
+        },
+        {
+            "error_chance": 0,
+            "is_half_duplex": false,
+            "node1_id": 18,
+            "node2_id": 20,
+            "weight": 15
+        },
+        {
+            "error_chance": 0,
+            "is_half_duplex": true,
+            "node1_id": 18,
+            "node2_id": 19,
+            "weight": 5
+        },
+        {
+            "error_chance": 0,
+            "is_half_duplex": false,
+            "node1_id": 16,
+            "node2_id": 18,
+            "weight": 8
+        },
+        {
+            "error_chance": 0,
+            "is_half_duplex": false,
+            "node1_id": 16,
+            "node2_id": 15,
+            "weight": 1
+        },
+        {
+            "error_chance": 0,
+            "is_half_duplex": false,
+            "node1_id": 16,
+            "node2_id": 12,
+            "weight": 8
+        },
+        {
+            "error_chance": 0,
+            "is_half_duplex": true,
+            "node1_id": 15,
+            "node2_id": 23,
+            "weight": 15
+        },
+        {
+            "error_chance": 0,
+            "is_half_duplex": false,
+            "node1_id": 26,
+            "node2_id": 28,
+            "weight": 5
+        },
+        {
+            "error_chance": 0,
+            "is_half_duplex": false,
+            "node1_id": 31,
+            "node2_id": 28,
+            "weight": 3
+        },
+        {
+            "error_chance": 0,
+            "is_half_duplex": true,
+            "node1_id": 33,
+            "node2_id": 30,
+            "weight": 22
+        },
+        {
+            "error_chance": 0,
+            "is_half_duplex": false,
+            "node1_id": 8,
+            "node2_id": 4,
+            "weight": 6
+        },
+        {
+            "error_chance": 0,
+            "is_half_duplex": false,
+            "node1_id": 5,
+            "node2_id": 4,
+            "weight": 15
+        },
+        {
+            "error_chance": 0,
+            "is_half_duplex": false,
+            "node1_id": 0,
+            "node2_id": 6,
+            "weight": 22
+        },
+        {
+            "error_chance": 0,
+            "is_half_duplex": false,
+            "node1_id": 26,
+            "node2_id": 27,
+            "weight": 22
+        },
+        {
+            "error_chance": 0,
+            "is_half_duplex": false,
+            "node1_id": 26,
+            "node2_id": 25,
+            "weight": 10
+        },
+        {
+            "error_chance": 0,
+            "is_half_duplex": false,
+            "node1_id": 26,
+            "node2_id": 32,
+            "weight": 5
+        },
+        {
+            "error_chance": 0,
+            "is_half_duplex": false,
+            "node1_id": 31,
+            "node2_id": 29,
+            "weight": 1
+        },
+        {
+            "error_chance": 0,
+            "is_half_duplex": false,
+            "node1_id": 31,
+            "node2_id": 30,
+            "weight": 11
+        },
+        {
+            "error_chance": 0,
+            "is_half_duplex": false,
+            "node1_id": 35,
+            "node2_id": 33,
+            "weight": 18
+        },
+        {
+            "error_chance": 0,
+            "is_half_duplex": false,
+            "node1_id": 17,
+            "node2_id": 15,
+            "weight": 1
+        },
+        {
+            "error_chance": 0,
+            "is_half_duplex": false,
+            "node1_id": 8,
+            "node2_id": 28,
+            "weight": 3
+        },
+        {
+            "error_chance": 0,
+            "is_half_duplex": false,
+            "node1_id": 28,
+            "node2_id": 20,
+            "weight": 5
+        },
+        {
+            "error_chance": 0,
+            "is_half_duplex": false,
+            "node1_id": 20,
+            "node2_id": 8,
+            "weight": 1
+        },
+        {
+            "error_chance": 0,
+            "is_half_duplex": false,
+            "node1_id": 34,
+            "node2_id": 31,
+            "weight": 20
+        },
+        {
+            "error_chance": 0,
+            "is_half_duplex": false,
+            "node1_id": 14,
+            "node2_id": 18,
+            "weight": 20
+        },
+        {
+            "error_chance": 0,
+            "is_half_duplex": false,
+            "node1_id": 18,
+            "node2_id": 22,
+            "weight": 15
+        },
+        {
+            "error_chance": 0,
+            "is_half_duplex": false,
+            "node1_id": 29,
+            "node2_id": 26,
+            "weight": 20
+        },
+        {
+            "error_chance": 0,
+            "is_half_duplex": false,
+            "node1_id": 11,
+            "node2_id": 2,
+            "weight": 5
+        },
+        {
+            "error_chance": 0,
+            "is_half_duplex": false,
+            "node1_id": 11,
+            "node2_id": 1,
+            "weight": 11
+        },
+        {
+            "error_chance": 0,
+            "is_half_duplex": false,
+            "node1_id": 15,
+            "node2_id": 12,
+            "weight": 1
+        },
+        {
+            "error_chance": 0,
+            "is_half_duplex": false,
+            "node1_id": 16,
+            "node2_id": 23,
+            "weight": 1
+        },
+        {
+            "error_chance": 0,
+            "is_half_duplex": false,
+            "node1_id": 35,
+            "node2_id": 29,
+            "weight": 22
+        },
+        {
+            "error_chance": 0,
+            "is_half_duplex": false,
+            "node1_id": 35,
+            "node2_id": 32,
+            "weight": 22
+        },
+        {
+            "error_chance": 0,
+            "is_half_duplex": false,
+            "node1_id": 30,
+            "node2_id": 34,
+            "weight": 8
+        },
+        {
+            "error_chance": 0,
+            "is_half_duplex": false,
+            "node1_id": 9,
+            "node2_id": 11,
+            "weight": 11
+        },
+        {
+            "error_chance": 0,
+            "is_half_duplex": false,
+            "node1_id": 20,
+            "node2_id": 17,
+            "weight": 26
+        },
+        {
+            "error_chance": 0,
+            "is_half_duplex": false,
+            "node1_id": 14,
+            "node2_id": 21,
+            "weight": 26
+        },
+        {
+            "error_chance": 0,
+            "is_half_duplex": false,
+            "node1_id": 7,
+            "node2_id": 0,
+            "weight": 20
+        }
+    ],
+    "nodes": [
+        {
+            "connectedHost": true,
+            "id": 0,
+            "x_pos": -55,
+            "y_pos": 157
+        },
+        {
+            "connectedHost": false,
+            "id": 1,
+            "x_pos": 4,
+            "y_pos": 74
+        },
+        {
+            "connectedHost": false,
+            "id": 2,
+            "x_pos": 119,
+            "y_pos": 112
+        },
+        {
+            "connectedHost": true,
+            "id": 3,
+            "x_pos": 194,
+            "y_pos": 130
+        },
+        {
+            "connectedHost": false,
+            "id": 4,
+            "x_pos": 164,
+            "y_pos": 218
+        },
+        {
+            "connectedHost": false,
+            "id": 5,
+            "x_pos": 47,
+            "y_pos": 226
+        },
+        {
+            "connectedHost": false,
+            "id": 6,
+            "x_pos": 64,
+            "y_pos": 158
+        },
+        {
+            "connectedHost": false,
+            "id": 7,
+            "x_pos": -3,
+            "y_pos": 312
+        },
+        {
+            "connectedHost": false,
+            "id": 8,
+            "x_pos": 256,
+            "y_pos": 300
+        },
+        {
+            "connectedHost": true,
+            "id": 9,
+            "x_pos": 366,
+            "y_pos": 161
+        },
+        {
+            "connectedHost": false,
+            "id": 10,
+            "x_pos": 266,
+            "y_pos": 158
+        },
+        {
+            "connectedHost": false,
+            "id": 11,
+            "x_pos": 255,
+            "y_pos": 24
+        },
+        {
+            "connectedHost": false,
+            "id": 12,
+            "x_pos": 662,
+            "y_pos": 97
+        },
+        {
+            "connectedHost": true,
+            "id": 13,
+            "x_pos": 584,
+            "y_pos": 163
+        },
+        {
+            "connectedHost": false,
+            "id": 14,
+            "x_pos": 865,
+            "y_pos": 290
+        },
+        {
+            "connectedHost": false,
+            "id": 15,
+            "x_pos": 693,
+            "y_pos": 197
+        },
+        {
+            "connectedHost": false,
+            "id": 16,
+            "x_pos": 812,
+            "y_pos": 203
+        },
+        {
+            "connectedHost": false,
+            "id": 17,
+            "x_pos": 537,
+            "y_pos": 246
+        },
+        {
+            "connectedHost": true,
+            "id": 18,
+            "x_pos": 748,
+            "y_pos": 281
+        },
+        {
+            "connectedHost": false,
+            "id": 19,
+            "x_pos": 782,
+            "y_pos": 376
+        },
+        {
+            "connectedHost": false,
+            "id": 20,
+            "x_pos": 615,
+            "y_pos": 378
+        },
+        {
+            "connectedHost": true,
+            "id": 21,
+            "x_pos": 892,
+            "y_pos": 161
+        },
+        {
+            "connectedHost": false,
+            "id": 22,
+            "x_pos": 624,
+            "y_pos": 276
+        },
+        {
+            "connectedHost": false,
+            "id": 23,
+            "x_pos": 814,
+            "y_pos": 92
+        },
+        {
+            "connectedHost": false,
+            "id": 24,
+            "x_pos": 218,
+            "y_pos": 595
+        },
+        {
+            "connectedHost": true,
+            "id": 25,
+            "x_pos": 227,
+            "y_pos": 707
+        },
+        {
+            "connectedHost": false,
+            "id": 26,
+            "x_pos": 335,
+            "y_pos": 640
+        },
+        {
+            "connectedHost": false,
+            "id": 27,
+            "x_pos": 301,
+            "y_pos": 547
+        },
+        {
+            "connectedHost": false,
+            "id": 28,
+            "x_pos": 419,
+            "y_pos": 510
+        },
+        {
+            "connectedHost": false,
+            "id": 29,
+            "x_pos": 433,
+            "y_pos": 723
+        },
+        {
+            "connectedHost": false,
+            "id": 30,
+            "x_pos": 524,
+            "y_pos": 698
+        },
+        {
+            "connectedHost": true,
+            "id": 31,
+            "x_pos": 446,
+            "y_pos": 637
+        },
+        {
+            "connectedHost": false,
+            "id": 32,
+            "x_pos": 344,
+            "y_pos": 805
+        },
+        {
+            "connectedHost": false,
+            "id": 33,
+            "x_pos": 523,
+            "y_pos": 528
+        },
+        {
+            "connectedHost": false,
+            "id": 34,
+            "x_pos": 670,
+            "y_pos": 573
+        },
+        {
+            "connectedHost": true,
+            "id": 35,
+            "x_pos": 622,
+            "y_pos": 788
+        }
+    ]
+}
