@@ -23,3 +23,5 @@ The Qt Libraries - http://qt-project.org/downloads
 ![path highlighting](/screenshots/shortest_path_highlighting.png?raw=true "Path highlighting")
 ## Example of simulation results
 ![simulation results](/screenshots/simulation_results.png?raw=true "Simulation results")
+## Sending demonstration
+![sending](/screenshots/SendingDemonstration.gif "Sending demonstration")
